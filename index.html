@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admission World | Direct Admission & Expert Counseling India</title>
+    <!-- FontAwesome for Attractive Red Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for Professional Typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-red: #E53E3E;
+            --dark-red: #C53030;
+            --text-dark: #2D3748;
+            --text-light: #718096;
+            --bg-light: #F7FAFC;
+            --white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--white);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Navigation Header */
+        header {
+            background: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .logo span {
+            color: var(--primary-red);
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
+            margin-left: 30px;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary-red);
+        }
+
+        .nav-btn {
+            background: var(--primary-red);
+            color: var(--white);
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .nav-btn:hover {
+            background: var(--dark-red);
+            color: var(--white);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 100px 20px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(229, 62, 62, 0.03) 0%, rgba(255,255,255,1) 100%);
+        }
+
+        .hero-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .badge {
+            background: rgba(229, 62, 62, 0.1);
+            color: var(--primary-red);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            color: var(--primary-red);
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-light);
+            margin-bottom: 40px;
+        }
+
+        .cta-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: var(--primary-red);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(229, 62, 62, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--dark-red);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--text-dark);
+            border: 2px solid #E2E8F0;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary-red);
+            color: var(--primary-red);
+        }
+
+        /* Motivational Quote Banner */
+        .quote-banner {
+            background: var(--bg-light);
+            padding: 50px 20px;
+            text-align: center;
+            border-left: 5px solid var(--primary-red);
+            margin: 40px auto;
+            max-width: 1200px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .quote-banner p {
+            font-size: 20px;
+            font-style: italic;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .quote-banner span {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: var(--primary-red);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Leadership Profile Section */
+        .leadership {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .leader-card {
+            background: var(--white);
+            border: 1px solid #E2E8F0;
+            padding: 40px;
+            border-radius: 12px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+        }
+
+        .leader-icon {
+            font-size: 50px;
+            color: var(--primary-red);
+            margin-bottom: 15px;
+        }
+
+        /* Sections Universal Layout */
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-light);
+            margin-bottom: 50px;
+            font-size: 16px;
+        }
+
+        /* Services Grid */
+        .services {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            padding: 30px;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .service-card:hover {
+            border-color: var(--primary-red);
+            transform: translateY(-5px);
+        }
+
+        .service-card i {
+            font-size: 35px;
+            color: var(--primary-red);
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            margin-bottom: 12px;
+            font-size: 20px;
+        }
+
+        /* Colleges Grid Section */
+        .colleges-section {
+            background: var(--bg-light);
+            padding: 80px 20px;
+        }
+
+        .colleges-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .college-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .college-card {
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid #E2E8F0;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .college-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .college-header {
+            padding: 25px;
+            border-bottom: 1px solid #F1F5F9;
+        }
+
+        .college-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+
+        .tag-row {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .mode-tag {
+            background: #FFF5F5;
+            color: var(--primary-red);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+
+        .college-body {
+            padding: 25px;
+        }
+
+        .highlight-box {
+            background: #FFF5F5;
+            border-left: 3px solid var(--primary-red);
+            padding: 12px;
+            border-radius: 0 4px 4px 0;
+            margin-bottom: 20px;
+            font-weight: 500;
+            color: var(--dark-red);
+            font-size: 14px;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .stats-table td {
+            padding: 8px 0;
+            font-size: 14px;
+        }
+
+        .stats-table td:last-child {
+            text-align: right;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .label-text {
+            color: var(--text-light);
+        }
+
+        /* Counseling and Form Formats Section */
+        .form-contact-section {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 50px;
+        }
+
+        .contact-info-side h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .info-block {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .info-block i {
+            font-size: 24px;
+            color: var(--primary-red);
+            background: #FFF5F5;
+            padding: 15px;
+            border-radius: 50%;
+            margin-right: 20px;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .info-block h4 {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .info-block p, .info-block a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .info-block a:hover {
+            color: var(--primary-red);
+        }
+
+        /* Registration Form Layout */
+        .form-side {
+            background: var(--white);
+            border: 1px solid #E2E8F0;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+        }
+
+        .form-side h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .form-side p {
+            color: var(--text-light);
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #E2E8F0;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-red);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--primary-red);
+            color: var(--white);
+            border: none;
+            padding: 14px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: var(--dark-red);
+        }
+
+        /* Footer Custom Block */
+        footer {
+            background: var(--text-dark);
+            color: var(--white);
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+
+        footer p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Mobile Adaptive Layout Optimization */
+        @media (max-width: 768px) {
+            .nav-container { flex-direction: column; gap: 15px; text-align: center; }
+            nav a { margin: 0 10px; font-size: 14px; }
+            .hero h1 { font-size: 32px; }
+            .form-contact-section { grid-template-columns: 1fr; }
+            .form-side { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation Bar -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">Admission <span>World</span></div>
+            <nav>
+                <a href="#home">Home</a>
+                <a href="#colleges">Top Colleges</a>
+                <a href="#counseling">Counseling</a>
+                <a href="#contact" class="nav-btn">Apply Now</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Home Section -->
+    <section class="hero" id="home">
+        <div class="hero-container">
+            <div class="badge"><i class="fa-solid fa-graduation-cap"></i> Trusted Admission Partner 2026</div>
+            <h1>Get <span>Direct Admission</span> in Top Private Colleges of India</h1>
+            <p>Skip the stressful, complex admission lines. Secure guaranteed seats in premier Engineering, Management, and professional tech programs with verified minimal structural costs and maximum returns on investment.</p>
+            <div class="cta-group">
+                <a href="#contact" class="btn btn-primary">Book Free Consultation</a>
+                <a href="#colleges" class="btn btn-secondary">Explore Colleges</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Motivational Thought Breakout Box -->
+    <div class="quote-banner">
+        <p>"Your academic background shouldn't be defined entirely by a single exam day score. True potential flourishes when you match with the right ecosystem, the best industry-exposure mentors, and high-growth opportunities."</p>
+        <span>Emporing Future Tech Pioneers</span>
+    </div>
+
+    <!-- Core Counseling Benefits Grid -->
+    <section class="services" id="counseling">
+        <h2 class="section-title">Verified Mentorship Programs</h2>
+        <p class="section-subtitle">Tailored assistance designed carefully for both aspiring students and vigilant parents.</p>
+        <div class="services-grid">
+            <div class="service-card">
+                <i class="fa-solid fa-users-gear"></i>
+                <h3>Expert JoSAA Support</h3>
+                <p>Complete strategic choice-filling guidance to ensure you extract the absolute best allocation rankings across public platforms.</p>
+            </div>
+            <div class="service-card">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h3>Direct University Paths</h3>
+                <p>Secure management and premium institutional placement quota pathways inside high-demand tech academies with zero hidden overheads.</p>
+            </div>
+            <div class="service-card">
+                <i class="fa-solid fa-piggy-bank"></i>
+                <h3>Minimal Structural Cost</h3>
+                <p>We actively guide profiles to leverage institutional fee-brackets and low-cost packages tailored explicitly to save parental budget limits.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Top Private Colleges Grid Profile Section -->
+    <section class="colleges-section" id="colleges">
+        <div class="colleges-container">
+            <h2 class="section-title">Premier Choice Private Frameworks</h2>
+            <p class="section-subtitle">Top-performing engineering and modern digital university hubs featuring direct enrollment pathways.</p>
+            
+            <div class="college-grid">
+                <!-- College Card 1: VIT -->
+                <div class="college-card">
+                    <div class="college-header">
+                        <div class="college-name">VIT Vellore</div>
+                        <div class="tag-row">
+                            <span class="mode-tag">Home Proctored Safe-Exam Available</span>
+                        </div>
+                    </div>
+                    <div class="college-body">
+                        <div class="highlight-box">Highly trusted for robust mass placements & vast infrastructural stability.</div>
+                        <table class="stats-table">
+                            <tr><td class="label-text">NIRF Ranking</td><td>#16 in India</td></tr>
+                            <tr><td class="label-text">Average Package (CSE)</td><td>₹9.5 - 12.0 LPA</td></tr>
+                            <tr><td class="label-text">Top Placements Range</td><td>Up to ₹80+ LPA</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- College Card 2: SRM -->
+                <div class="college-card">
+                    <div class="college-header">
+                        <div class="college-name">SRM Institute (KTR)</div>
+                        <div class="tag-row">
+                            <span class="mode-tag">Home Proctored Safe-Exam Available</span>
+                        </div>
+                    </div>
+                    <div class="college-body">
+                        <div class="highlight-box">Global tier collaborations and exceptional practical research labs.</div>
+                        <table class="stats-table">
+                            <tr><td class="label-text">NIRF Ranking</td><td>#14 in India</td></tr>
+                            <tr><td class="label-text">Average Package (CSE)</td><td>₹8.5 LPA</td></tr>
+                            <tr><td class="label-text">Top Corporate Partners</td><td>TCS, Amazon, Microsoft</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- College Card 3: Manipal -->
+                <div class="college-card">
+                    <div class="college-header">
+                        <div class="college-name">Manipal Institute (MIT)</div>
+                        <div class="tag-row">
+                            <span class="mode-tag">Home Proctored Safe-Exam Available</span>
+                        </div>
+                    </div>
+                    <div class="college-body">
+                        <div class="highlight-box">Premium corporate alumni circle with massive entrepreneurial start-up cultures.</div>
+                        <table class="stats-table">
+                            <tr><td class="label-text">NIRF Ranking</td><td>Top Tier Elite</td></tr>
+                            <tr><td class="label-text">Average Package (CSE)</td><td>₹14.0 LPA</td></tr>
+                            <tr><td class="label-text">Highest International Tier</td><td>₹45+ LPA</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- College Card 4: Scaler School of Technology -->
+                <div class="college-card">
+                    <div class="college-header">
+                        <div class="college-name">Scaler School of Technology</div>
+                        <div class="tag-row">
+                            <span class="mode-tag">Online Internal Review Test</span>
+                        </div>
+                    </div>
+                    <div class="college-body">
+                        <div class="highlight-box">100% data-driven curriculum mentored entirely by active MAANG experts.</div>
+                        <table class="stats-table">
+                            <tr><td class="label-text">Curriculum Style</td><td>Industry Work-Immersive</td></tr>
+                            <tr><td class="label-text">Projected Average Pack</td><td>₹15.0 - 20.0 LPA</td></tr>
+                            <tr><td class="label-text">Core Benefit</td><td>1-Year Paid Internships</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- College Card 5: Newton School of Technology -->
+                <div class="college-card">
+                    <div class="college-header">
+                        <div class="college-name">Newton School of Tech</div>
+                        <div class="tag-row">
+                            <span class="mode-tag">Online Remote Review Test</span>
+                        </div>
+                    </div>
+                    <div class="college-body">
+                        <div class="highlight-box">Future-focused degree prioritizing AI, machine learning, and global tech study trips.</div>
+                        <table class="stats-table">
+                            <tr><td class="label-text">Industry Connection</td><td>Global Startup Ecosystems</td></tr>
+                            <tr><td class="label-text">Average Package (Tech)</td><td>₹12.0+ LPA</td></tr>
+                            <tr><td class="label-text">Practical Work Hours</td><td>Over 1500+ Hours Coding</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- College Card 6: upGrad Campus Hubs -->
+                <div class="college-card">
+                    <div class="college-header">
+                        <div class="college-name">upGrad Specialized Hubs</div>
+                        <div class="tag-row">
+                            <span class="mode-tag">Direct Institutional Profile Allocation</span>
+                        </div>
+                    </div>
+                    <div class="college-body">
+                        <div class="highlight-box">Outstanding balance featuring lower structural tuition fees matched to direct job assurance.</div>
+                        <table class="stats-table">
+                            <tr><td class="label-text">Cost Focus</td><td>Minimal Financial Overhead</td></tr>
+                            <tr><td class="label-text">Average Package Base</td><td>₹7.0 - 9.0 LPA</td></tr>
+                            <tr><td class="label-text">Recruitment Partners</td><td>500+ Global Corporate Links</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Company Leadership Anchor Profile -->
+    <section class="leadership">
+        <div class="leader-card">
+            <div class="leader-icon"><i class="fa-solid fa-user-tie"></i></div>
+            <h2>Message from the Desk of Our Director</h2>
+            <p style="font-weight: 700; color: var(--primary-red); margin-bottom: 15px; font-size: 18px;">Mr. Rahul Sir</p>
+            <p style="color: var(--text-light); font-size: 15px;">"Our core corporate mission remains simple: to clear out administrative ambiguity for aspiring candidates. We connect bright students directly to matching future-focused institutional frameworks, prioritizing practical execution over mere qualification boundaries."</p>
+        </div>
+    </section>
+
+    <!-- Interaction: Counseling and Contact Lead Capture Section -->
+    <section class="form-contact-section" id="contact">
+        <!-- Contact Left Text Block -->
+        <div class="contact-info-side">
+            <h2>Get in Touch with Our Counselors</h2>
+            <p style="color: var(--text-light); margin-bottom: 40px;">Parents and students can reach out to our desk directly for instantaneous seat reservation updates, structure details, and verified fee-bracket mappings.</p>
+            
+            <div class="info-block">
+                <i class="fa-solid fa-phone"></i>
+                <div>
+                    <h4>Call or WhatsApp Us</h4>
+                    <p><a href="tel:+919928422720">+91 9928422720</a></p>
+                </div>
+            </div>
+
+            <div class="info-block">
+                <i class="fa-solid fa-envelope"></i>
+                <div>
+                    <h4>Corporate Email Address</h4>
+                    <p><a href="mailto:amanpandeypw@gmail.com">amanpandeypw@gmail.com</a></p>
+                </div>
+            </div>
+
+            <div class="info-block">
+                <i class="fa-solid fa-clock"></i>
+                <div>
+                    <h4>Counseling Desk Timings</h4>
+                    <p>Monday - Sunday | 9:00 AM - 9:00 PM IST</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registration Contact Input Form Side -->
+        <div class="form-side">
+            <h3>Secure Your Seat Appointment</h3>
+            <p>Fill out the basic academic profile details below, and our official counselor team will reach out with placement analytics reports within 24 business hours.</p>
+            
+            <form action="https://formspree.io/f/YOUR_ENDPOINT_HERE" method="POST">
+                <div class="form-group">
+                    <label for="student-name">Student Full Name</label>
+                    <input type="text" id="student-name" name="name" placeholder="Enter full legal name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone-number">Active Mobile Number</label>
+                    <input type="tel" id="phone-number" name="phone" placeholder="Enter 10-digit phone number" pattern="[0-9]{10}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="college-preference">Target College Preference</label>
+                    <select id="college-preference" name="preferred_college">
+                        <option value="" disabled selected>Choose your top preference</option>
+                        <option value="vit">VIT Vellore</option>
+                        <option value="srm">SRM Institute (KTR)</option>
+                        <option value="manipal">Manipal Institute (MIT)</option>
+                        <option value="scaler">Scaler School of Tech</option>
+                        <option value="newton">Newton School of Tech</option>
+                        <option value="upgrad">upGrad Campus Hubs</option>
+                        <option value="josaa">General JoSAA / State Counseling Guidance</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">Request Callback & Guidance</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer System Layout Block -->
+    <footer>
+        <p>&copy; 2026 Admission World. All Rights Reserved. Managed under the Direction of Mr. Rahul Sir.</p>
+    </footer>
+
+</body>
+</html>
