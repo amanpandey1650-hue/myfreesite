@@ -825,23 +825,47 @@
   }
   async function loadScraped() {
     try {
-      const response = await fetch('/api/colleges');
-      if (!response.ok) throw new Error('Scraper endpoint unavailable');
-      const data = await response.json();
-      if (Array.isArray(data.colleges)) {
-        const known = new Set(colleges.map(c => c.name.toLowerCase()));
-        data.colleges.forEach(c => { if (c.name && !known.has(c.name.toLowerCase())) colleges.push({
-          name:c.name, city:c.city || 'See NIRF listing', state:c.state || 'Not listed', rank:c.rank || null,
-          exam:'Check official admission notice', eligibility:'Check official eligibility page',
-          fees:'Check official fee schedule', placement:'See official NIRF/institute report',
-          website:c.website || officialNirf, source:c.source || officialNirf
-        }); });
+      let offset = 0, total = Infinity, fetched = [];
+      // Paginate the full dataset instead of showing only the first page.
+      while (offset < total && offset < 100000) {
+        const response = await fetch('/api/colleges?limit=500&offset=' + offset);
+        if (!response.ok) throw new Error('Catalogue API unavailable');
+        const data = await response.json();
+        if (!data.ok || !Array.isArray(data.colleges)) throw new Error('Unexpected catalogue API response');
+        fetched = fetched.concat(data.colleges);
+        total = Number(data.total || fetched.length);
+        if (!data.colleges.length) break;
+        offset += data.colleges.length;
+        status.textContent = 'Loading nationwide engineering catalogue… ' + Math.min(offset,total) + ' of ' + total;
+        if (offset >= total) break;
       }
-      status.textContent = 'Catalogue loaded. NIRF-scraped entries are supplemented by institution-specific starter profiles.';
+      const byName = new Map();
+      fetched.forEach(c => {
+        const key = String(c.name || '').toLowerCase();
+        if (!key) return;
+        byName.set(key, {
+          ...c,
+          city:c.city || c.district || 'Location not listed',
+          state:c.state || 'State not listed',
+          exam:(c.entranceExams && c.entranceExams.length) ? c.entranceExams.join(', ') : 'Check official admission notice',
+          eligibility:c.eligibility || 'Check official eligibility page',
+          fees:c.fees || 'Check official fee schedule',
+          placement:c.placementStats || 'See latest official placement report',
+          website:c.website || c.sourceUrl || 'https://www.aicte-india.org/',
+          courses:(c.programmes || []).map(p => p.course).filter(Boolean).join(', '),
+          rank:c.rank || null
+        });
+      });
+      const combined = [...byName.values()];
+      if (combined.length) colleges = combined;
+      fillStates();
+      render();
+      status.textContent = 'Loaded ' + colleges.length + ' institutions from the nationwide AICTE-based dataset. Fees, eligibility and placement figures require official-source verification.';
     } catch (_) {
-      status.textContent = 'Showing starter catalogue. Live NIRF import is unavailable right now; try again later.';
+      fillStates();
+      render();
+      status.textContent = 'Live catalogue unavailable. Showing starter records; please retry after the backend deployment finishes.';
     }
-    fillStates(); render();
   }
   [search,stateFilter,examFilter].forEach(el => el.addEventListener('input', render));
   loadScraped();
