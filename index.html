@@ -494,6 +494,25 @@
             .form-contact-section { grid-template-columns: 1fr; }
             .form-side { padding: 25px; }
         }
+
+        /* Searchable B.Tech catalogue */
+        .catalogue-section { max-width:1200px; margin:80px auto; padding:0 20px; }
+        .catalogue-controls { display:grid; grid-template-columns:2fr 1fr 1fr; gap:12px; margin:0 0 28px; }
+        .catalogue-controls input,.catalogue-controls select { width:100%; min-width:0; padding:13px 14px; border:1px solid #E2E8F0; border-radius:8px; background:#fff; color:var(--text-dark); font-size:15px; }
+        .catalogue-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; }
+        .catalogue-card { border:1px solid #E2E8F0; border-radius:12px; padding:22px; background:#fff; box-shadow:0 4px 18px rgba(0,0,0,.035); display:flex; flex-direction:column; gap:10px; }
+        .catalogue-card h3 { font-size:19px; line-height:1.35; }
+        .catalogue-meta { color:var(--text-light); font-size:14px; }
+        .catalogue-card dl { display:grid; grid-template-columns:1fr; gap:9px; margin:4px 0; }
+        .catalogue-card dt { color:var(--text-light); font-size:12px; text-transform:uppercase; letter-spacing:.04em; }
+        .catalogue-card dd { font-size:14px; overflow-wrap:anywhere; }
+        .catalogue-card a { color:var(--primary-red); font-weight:600; text-decoration:none; }
+        .catalogue-card a:hover { text-decoration:underline; }
+        .catalogue-rank { display:inline-block; align-self:flex-start; background:#FFF5F5; color:var(--dark-red); padding:5px 9px; border-radius:5px; font-size:12px; font-weight:700; }
+        .catalogue-status { margin:0 0 18px; color:var(--text-light); }
+        .catalogue-note { margin-top:24px; padding:16px; border-radius:8px; background:var(--bg-light); color:var(--text-light); font-size:13px; }
+        @media(max-width:768px) { .catalogue-controls { grid-template-columns:1fr; } }
+
     </style>
 </head>
 <body>
@@ -505,6 +524,7 @@
             <nav>
                 <a href="#home">Home</a>
                 <a href="#colleges">Top Colleges</a>
+                <a href="#catalogue">B.Tech Catalogue</a>
                 <a href="#counseling">Counseling</a>
                 <a href="#contact" class="nav-btn">Apply Now</a>
             </nav>
@@ -752,6 +772,81 @@
     <footer>
         <p>&copy; 2026 Admission World. All Rights Reserved. Managed under the Direction of Anoop Pandey, IIT Patna.</p>
     </footer>
+
+
+<script>
+(() => {
+  const grid = document.getElementById('catalogue-grid');
+  const status = document.getElementById('catalogue-status');
+  const search = document.getElementById('college-search');
+  const stateFilter = document.getElementById('state-filter');
+  const examFilter = document.getElementById('exam-filter');
+  const officialNirf = 'https://www.nirfindia.org/Rankings/2025/EngineeringRanking.html';
+  const seed = [
+    {name:'BITS Pilani',city:'Pilani',state:'Rajasthan',exam:'BITSAT',website:'https://www.bits-pilani.ac.in/',fees:'Check official fee schedule',eligibility:'Class 12 with Physics, Chemistry and Mathematics; subject and minimum-mark rules apply',placement:'See latest official placement report',rank:11},
+    {name:'SRM Institute of Science and Technology',city:'Kattankulathur',state:'Tamil Nadu',exam:'SRMJEEE',website:'https://www.srmist.edu.in/',fees:'Check official programme fee page',eligibility:'Class 12 with PCM; minimum marks and programme rules apply',placement:'See official placement report',rank:14},
+    {name:'Vellore Institute of Technology (VIT)',city:'Vellore',state:'Tamil Nadu',exam:'VITEEE',website:'https://vit.ac.in/',fees:'Check official fee category and branch',eligibility:'Class 12 with PCM/eligible subjects; current minimum marks and age rules apply',placement:'See official placement report',rank:16},
+    {name:'Siksha O Anusandhan',city:'Bhubaneswar',state:'Odisha',exam:'JEE Main',website:'https://www.soa.ac.in/',fees:'Check official admissions/fee page',eligibility:'Class 12 with required science subjects; accepted exams and minimum marks vary',placement:'See official placement report',rank:22},
+    {name:'Amrita Vishwa Vidyapeetham',city:'Coimbatore',state:'Tamil Nadu',exam:'University test / merit',website:'https://www.amrita.edu/',fees:'Check campus and programme fee schedule',eligibility:'Class 12 with PCM; accepted admission route and marks vary by programme',placement:'See official placement report',rank:23},
+    {name:'Thapar Institute of Engineering and Technology',city:'Patiala',state:'Punjab',exam:'JEE Main',website:'https://www.thapar.edu/',fees:'Check official fee schedule',eligibility:'Class 12 with PCM; JEE/other route and minimum marks depend on category',placement:'See official placement report',rank:29},
+    {name:'Chandigarh University',city:'Mohali',state:'Punjab',exam:'CUCET / JEE Main',website:'https://www.cuchd.in/',fees:'Check official course fee page',eligibility:'Class 12 with required science subjects; scholarship and entry rules vary',placement:'See official placement report',rank:31},
+    {name:'Amity University',city:'Noida',state:'Uttar Pradesh',exam:'JEE Main',website:'https://www.amity.edu/',fees:'Check campus-specific official fee page',eligibility:'Class 12 with PCM for most B.Tech branches; programme-specific conditions apply',placement:'See official placement report',rank:37},
+    {name:'UPES',city:'Dehradun',state:'Uttarakhand',exam:'JEE Main',website:'https://www.upes.ac.in/',fees:'Check official course fee page',eligibility:'Class 12 with PCM; accepted tests and minimum marks vary by programme',placement:'See official placement report',rank:43},
+    {name:'Symbiosis Institute of Technology',city:'Pune',state:'Maharashtra',exam:'JEE Main',website:'https://www.sitpune.edu.in/',fees:'Check official fee schedule',eligibility:'Class 12 with PCM; accepted exam and minimum marks must be confirmed on admissions page',placement:'See official placement report',rank:46},
+    {name:'Sri Sivasubramaniya Nadar College of Engineering',city:'Kalavakkam',state:'Tamil Nadu',exam:'University test / merit',website:'https://www.ssn.edu.in/',fees:'Check official fee and admission notice',eligibility:'Admission route differs for counselling/category; confirm current official notice',placement:'See official placement report',rank:47},
+    {name:'Lovely Professional University',city:'Phagwara',state:'Punjab',exam:'JEE Main',website:'https://www.lpu.in/',fees:'Check official programme fee and scholarship page',eligibility:'Class 12 with required subjects; LPUNEST/JEE routes and marks vary',placement:'See official placement report',rank:48},
+    {name:'Manipal University Jaipur',city:'Jaipur',state:'Rajasthan',exam:'MET',website:'https://jaipur.manipal.edu/',fees:'Check official course fee page',eligibility:'Class 12 with required science subjects; current MET/other entry rules apply',placement:'See official placement report',rank:58},
+    {name:'BMS College of Engineering',city:'Bengaluru',state:'Karnataka',exam:'JEE Main',website:'https://bmsce.ac.in/',fees:'Check official fee and counselling quota',eligibility:'Class 12 with PCM; KCET/COMEDK and quota rules may apply',placement:'See official placement report',rank:null},
+    {name:'Ramaiah Institute of Technology',city:'Bengaluru',state:'Karnataka',exam:'JEE Main',website:'https://www.msrit.edu/',fees:'Check official fee and counselling quota',eligibility:'Class 12 with PCM; KCET/COMEDK and quota rules may apply',placement:'See official placement report',rank:null},
+    {name:'Vishwakarma Institute of Technology',city:'Pune',state:'Maharashtra',exam:'JEE Main',website:'https://www.vit.edu/',fees:'Check official fee and Maharashtra CAP notice',eligibility:'Class 12 with PCM; MHT-CET/JEE and category rules may apply',placement:'See official placement report',rank:null}
+  ];
+  let colleges = seed.slice();
+  const safe = value => String(value ?? 'Not published').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function render() {
+    const q = search.value.trim().toLowerCase();
+    const state = stateFilter.value;
+    const exam = examFilter.value;
+    const matches = colleges.filter(c => (!state || c.state === state) && (!exam || (c.exam || '').toLowerCase().includes(exam.toLowerCase())) &&
+      [c.name,c.city,c.state,c.exam,c.eligibility].join(' ').toLowerCase().includes(q));
+    grid.innerHTML = matches.map(c => '<article class="catalogue-card">' +
+      (c.rank ? '<span class="catalogue-rank">NIRF Engineering 2025: #' + safe(c.rank) + '</span>' : '<span class="catalogue-rank">Rank not listed here</span>') +
+      '<h3>' + safe(c.name) + '</h3><p class="catalogue-meta">' + safe(c.city) + ', ' + safe(c.state) + '</p>' +
+      '<dl><div><dt>Entrance exam</dt><dd>' + safe(c.exam || 'Check official admission notice') + '</dd></div>' +
+      '<div><dt>Eligibility</dt><dd>' + safe(c.eligibility || 'Check official admission notice') + '</dd></div>' +
+      '<div><dt>B.Tech fees</dt><dd>' + safe(c.fees || 'Check official fee schedule') + '</dd></div>' +
+      '<div><dt>Placement statistics</dt><dd>' + safe(c.placement || 'Check latest official placement report') + '</dd></div></dl>' +
+      '<a href="' + safe(c.website) + '" target="_blank" rel="noopener noreferrer">Official college website ↗</a></article>').join('');
+    status.textContent = 'Showing ' + matches.length + ' of ' + colleges.length + ' catalogue entries.';
+  }
+  function fillStates() {
+    [...new Set(colleges.map(c => c.state).filter(Boolean))].sort().forEach(s => {
+      const option = document.createElement('option'); option.value = s; option.textContent = s; stateFilter.appendChild(option);
+    });
+  }
+  async function loadScraped() {
+    try {
+      const response = await fetch('/api/colleges');
+      if (!response.ok) throw new Error('Scraper endpoint unavailable');
+      const data = await response.json();
+      if (Array.isArray(data.colleges)) {
+        const known = new Set(colleges.map(c => c.name.toLowerCase()));
+        data.colleges.forEach(c => { if (c.name && !known.has(c.name.toLowerCase())) colleges.push({
+          name:c.name, city:c.city || 'See NIRF listing', state:c.state || 'Not listed', rank:c.rank || null,
+          exam:'Check official admission notice', eligibility:'Check official eligibility page',
+          fees:'Check official fee schedule', placement:'See official NIRF/institute report',
+          website:c.website || officialNirf, source:c.source || officialNirf
+        }); });
+      }
+      status.textContent = 'Catalogue loaded. NIRF-scraped entries are supplemented by institution-specific starter profiles.';
+    } catch (_) {
+      status.textContent = 'Showing starter catalogue. Live NIRF import is unavailable right now; try again later.';
+    }
+    fillStates(); render();
+  }
+  [search,stateFilter,examFilter].forEach(el => el.addEventListener('input', render));
+  loadScraped();
+})();
+</script>
 
 </body>
 </html>
