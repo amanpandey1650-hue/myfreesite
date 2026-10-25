@@ -4,6 +4,7 @@
   "private": true,
   "description": "Admission World college catalogue API using open-source Cheerio HTML parser",
   "dependencies": {
-    "cheerio": "^1.1.2"
+    "cheerio": "^1.1.2",
+    "@mendable/firecrawl-js": "^1.29.2"
   }
 }
