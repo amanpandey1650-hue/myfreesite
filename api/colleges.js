@@ -75,19 +75,6 @@ async function loadAll() {
   return cache.records;
 }
 
-async function requireUser(req) {
-  const auth = req.headers.authorization || '';
-  const token = auth.startsWith('Bearer ') ? auth.slice(7) : '';
-  const url = process.env.SUPABASE_URL;
-  const anon = process.env.SUPABASE_ANON_KEY;
-  if (!token || !url || !anon) return null;
-  const response = await fetch(url.replace(/\\/$/, '') + '/auth/v1/user', {
-    headers: { apikey: anon, Authorization: 'Bearer ' + token },
-    signal: AbortSignal.timeout(8000)
-  });
-  if (!response.ok) return null;
-  return response.json();
-}
 
 module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 's-maxage=21600, stale-while-revalidate=86400');
@@ -98,8 +85,6 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ ok: false, error: 'Use GET' });
   }
   try {
-    const user = await requireUser(req);
-    if (!user || !user.id) return res.status(401).json({ ok: false, error: 'Login required' });
     let records = await loadAll();
     const q = text(req.query.q).toLowerCase();
     const state = text(req.query.state).toLowerCase();
