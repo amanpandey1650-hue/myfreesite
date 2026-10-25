@@ -812,6 +812,7 @@
       (c.rank ? '<span class="catalogue-rank">NIRF Engineering 2025: #' + safe(c.rank) + '</span>' : '<span class="catalogue-rank">Rank not listed here</span>') +
       '<h3>' + safe(c.name) + '</h3><p class="catalogue-meta">' + safe(c.city) + ', ' + safe(c.state) + '</p>' +
       '<dl><div><dt>Entrance exam</dt><dd>' + safe(c.exam || 'Check official admission notice') + '</dd></div>' +
+      '<div><dt>B.Tech programmes</dt><dd>' + safe(c.courses || 'Check official programme list') + '</dd></div>' +
       '<div><dt>Eligibility</dt><dd>' + safe(c.eligibility || 'Check official admission notice') + '</dd></div>' +
       '<div><dt>B.Tech fees</dt><dd>' + safe(c.fees || 'Check official fee schedule') + '</dd></div>' +
       '<div><dt>Placement statistics</dt><dd>' + safe(c.placement || 'Check latest official placement report') + '</dd></div></dl>' +
