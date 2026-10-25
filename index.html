@@ -846,7 +846,9 @@ body.auth-locked { overflow:hidden; }
       let offset = 0, total = Infinity, fetched = [];
       // Paginate the full dataset instead of showing only the first page.
       while (offset < total && offset < 100000) {
-        const response = await fetch('/api/colleges?limit=500&offset=' + offset);
+        const token = window.admissionWorldSession ? await window.admissionWorldSession.getAccessToken() : null;
+        if (!token) throw new Error('Please log in to load the catalogue');
+        const response = await fetch('/api/colleges?limit=500&offset=' + offset, { headers: { Authorization: 'Bearer ' + token } });
         if (!response.ok) throw new Error('Catalogue API unavailable');
         const data = await response.json();
         if (!data.ok || !Array.isArray(data.colleges)) throw new Error('Unexpected catalogue API response');
