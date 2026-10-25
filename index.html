@@ -513,7 +513,24 @@
         .catalogue-note { margin-top:24px; padding:16px; border-radius:8px; background:var(--bg-light); color:var(--text-light); font-size:13px; }
         @media(max-width:768px) { .catalogue-controls { grid-template-columns:1fr; } }
 
-    </style>
+    
+/* Mandatory account gate */
+body.auth-locked { overflow:hidden; }
+#aw-auth-gate { position:fixed; inset:0; z-index:999999; display:flex; align-items:center; justify-content:center; padding:20px; background:rgba(15,23,42,.82); backdrop-filter:blur(8px); }
+#aw-auth-gate[hidden] { display:none !important; }
+.aw-auth-card { width:min(100%,460px); padding:32px; background:#fff; border-radius:18px; box-shadow:0 24px 80px rgba(0,0,0,.25); color:#1e293b; }
+.aw-auth-card h2 { margin:0 0 8px; font-size:28px; }
+.aw-auth-card p { color:#64748b; line-height:1.55; margin:0 0 20px; }
+.aw-auth-card label { display:block; font-size:13px; font-weight:700; margin:12px 0 6px; }
+.aw-auth-card input { width:100%; box-sizing:border-box; padding:12px 13px; border:1px solid #cbd5e1; border-radius:8px; font-size:15px; }
+.aw-auth-actions { display:flex; gap:10px; margin-top:18px; }
+.aw-auth-actions button { flex:1; padding:12px; border:0; border-radius:8px; cursor:pointer; font-weight:700; }
+#aw-login { background:#dc3e3e; color:white; } #aw-signup { background:#e2e8f0; color:#1e293b; }
+#aw-auth-message { margin-top:14px; font-size:13px; color:#b91c1c; overflow-wrap:anywhere; }
+#aw-auth-user { position:fixed; right:16px; bottom:16px; z-index:1000; background:#fff; border:1px solid #e2e8f0; border-radius:999px; padding:8px 12px; display:none; align-items:center; gap:10px; box-shadow:0 4px 20px #0001; font-size:12px; }
+#aw-auth-user button { border:0; background:#dc3e3e; color:white; padding:6px 9px; border-radius:6px; cursor:pointer; }
+
+</style>
 </head>
 <body>
 
@@ -870,6 +887,95 @@
   }
   [search,stateFilter,examFilter].forEach(el => el.addEventListener('input', render));
   loadScraped();
+})();
+</script>
+
+
+<div id="aw-auth-gate" role="dialog" aria-modal="true" aria-labelledby="aw-auth-title">
+  <div class="aw-auth-card">
+    <h2 id="aw-auth-title">Welcome to Admission World</h2>
+    <p>Create an account or log in to access college search, admissions information and scraper tools.</p>
+    <div id="aw-auth-config-warning" hidden style="padding:10px;background:#fff7ed;color:#9a3412;border-radius:8px;font-size:13px;margin-bottom:12px">Authentication is not configured. The site owner must add Supabase environment variables in Vercel.</div>
+    <form id="aw-auth-form">
+      <label for="aw-auth-email">Email address</label>
+      <input id="aw-auth-email" type="email" autocomplete="email" required>
+      <label for="aw-auth-password">Password</label>
+      <input id="aw-auth-password" type="password" autocomplete="current-password" minlength="8" required>
+      <div class="aw-auth-actions"><button id="aw-login" type="submit">Log in</button><button id="aw-signup" type="button">Create account</button></div>
+      <div id="aw-auth-message" role="status"></div>
+    </form>
+  </div>
+</div>
+<div id="aw-auth-user"><span id="aw-auth-email-label"></span><button id="aw-logout" type="button">Log out</button></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(async function () {
+  const gate = document.getElementById('aw-auth-gate');
+  const message = document.getElementById('aw-auth-message');
+  const warning = document.getElementById('aw-auth-config-warning');
+  const form = document.getElementById('aw-auth-form');
+  const email = document.getElementById('aw-auth-email');
+  const password = document.getElementById('aw-auth-password');
+  const login = document.getElementById('aw-login');
+  const signup = document.getElementById('aw-signup');
+  const userBadge = document.getElementById('aw-auth-user');
+  let client = null;
+  function showError(text) { message.textContent = text || ''; }
+  function unlock(user) {
+    gate.hidden = true;
+    document.body.classList.remove('auth-locked');
+    userBadge.style.display = 'flex';
+    document.getElementById('aw-auth-email-label').textContent = user.email || 'Signed in';
+    window.admissionWorldSession = { client, getAccessToken: async () => (await client.auth.getSession()).data.session?.access_token || null };
+    window.dispatchEvent(new CustomEvent('admissionworld:authenticated'));
+  }
+  function lock() {
+    gate.hidden = false;
+    document.body.classList.add('auth-locked');
+    userBadge.style.display = 'none';
+  }
+  lock();
+  try {
+    const response = await fetch('/api/config', { cache: 'no-store' });
+    const cfg = await response.json();
+    if (!cfg.configured || !window.supabase) {
+      warning.hidden = false;
+      showError('Site owner setup required. Add SUPABASE_URL and SUPABASE_ANON_KEY in Vercel, then redeploy.');
+      login.disabled = signup.disabled = true;
+      return;
+    }
+    client = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
+    const { data } = await client.auth.getSession();
+    if (data.session) unlock(data.session.user);
+    client.auth.onAuthStateChange((event, session) => {
+      if (session) unlock(session.user); else lock();
+    });
+  } catch (_) {
+    warning.hidden = false;
+    showError('Could not initialize authentication. Check the Supabase configuration and deployment.');
+    return;
+  }
+  form.addEventListener('submit', async e => {
+    e.preventDefault(); showError('');
+    login.disabled = signup.disabled = true;
+    try {
+      const { data, error } = await client.auth.signInWithPassword({ email: email.value.trim(), password: password.value });
+      if (error) throw error;
+      if (data.user) unlock(data.user);
+    } catch (err) { showError(err.message || 'Login failed.'); }
+    finally { login.disabled = signup.disabled = false; }
+  });
+  signup.addEventListener('click', async () => {
+    showError(''); login.disabled = signup.disabled = true;
+    try {
+      const { data, error } = await client.auth.signUp({ email: email.value.trim(), password: password.value });
+      if (error) throw error;
+      if (data.session && data.user) unlock(data.user);
+      else showError('Account created. Check your email to confirm, then log in.');
+    } catch (err) { showError(err.message || 'Could not create account.'); }
+    finally { login.disabled = signup.disabled = false; }
+  });
+  document.getElementById('aw-logout').addEventListener('click', async () => { await client.auth.signOut(); lock(); });
 })();
 </script>
 
